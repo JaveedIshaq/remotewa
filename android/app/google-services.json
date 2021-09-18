@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "150645000782",
+    "project_id": "remotewa-522cb",
+    "storage_bucket": "remotewa-522cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150645000782:android:01eaef8a87b294edf8111f",
+        "android_client_info": {
+          "package_name": "com.javeedishaq.remotewa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150645000782-bnfg8cgm4od5ehrgtcr90t0c7261uee7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.javeedishaq.remotewa",
+            "certificate_hash": "bed13b9513672c3558530d73727465368066a8b0"
+          }
+        },
+        {
+          "client_id": "150645000782-eeivd1ntrfi69t8a3afuhpfm5g078r19.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9Q2MKIdwm_x-5KiF-aD58wTMRAu2mGa0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150645000782-eeivd1ntrfi69t8a3afuhpfm5g078r19.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
