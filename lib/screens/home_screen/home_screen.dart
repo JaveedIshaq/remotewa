@@ -20,9 +20,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:remotewa/config/colors.dart';
+import 'package:remotewa/config/helper_functions.dart';
 import 'package:remotewa/models/user_chat.dart';
 import 'package:remotewa/screens/chat_screen/chat_screen.dart';
 import 'package:remotewa/screens/settings_screen/settings_screen.dart';
@@ -111,98 +111,8 @@ class HomeScreenState extends State<HomeScreen> {
 
   /// On Back Press
   Future<bool> onBackPress() {
-    openDialog();
+    openLogoutDialog(context);
     return Future.value(false);
-  }
-
-  /// Dialog to ask exit from App
-  Future<void> openDialog() async {
-    switch (await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.only(
-                left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
-            children: <Widget>[
-              Container(
-                color: kPrimaryDarkColor,
-                margin: const EdgeInsets.all(0.0),
-                padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
-                height: 110.0,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: const Icon(
-                        Icons.exit_to_app,
-                        size: 30.0,
-                        color: Colors.white,
-                      ),
-                      margin: const EdgeInsets.only(bottom: 10.0),
-                    ),
-                    const Text(
-                      'Exit app',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const Text(
-                      'Are you sure to exit app?',
-                      style: TextStyle(color: Colors.white70, fontSize: 14.0),
-                    ),
-                  ],
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context, 0);
-                },
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      child: Icon(
-                        Icons.cancel,
-                        color: primaryColor,
-                      ),
-                      margin: const EdgeInsets.only(right: 10.0),
-                    ),
-                    Text(
-                      'CANCEL',
-                      style: TextStyle(
-                          color: primaryColor, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context, 1);
-                },
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      child: Icon(
-                        Icons.check_circle,
-                        color: primaryColor,
-                      ),
-                      margin: const EdgeInsets.only(right: 10.0),
-                    ),
-                    Text(
-                      'YES',
-                      style: TextStyle(
-                          color: primaryColor, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          );
-        })) {
-      case 0:
-        break;
-      case 1:
-        exit(0);
-    }
   }
 
   /// Logout Function
@@ -220,70 +130,80 @@ class HomeScreenState extends State<HomeScreen> {
         (Route<dynamic> route) => false);
   }
 
+//*************** HomeScreen Scaffold ******************* */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBgColor,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text(
-          widget.currentUserName,
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          buildLogoutPopUp(),
+      appBar: buildHomeScreenAppBar(context),
+      body: buildHomeScreenBody(),
+    );
+  }
+//********************************** */
+
+  ///
+  WillPopScope buildHomeScreenBody() {
+    return WillPopScope(
+      onWillPop: onBackPress,
+      child: Stack(
+        children: <Widget>[
+          // List
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .limit(_limit)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(10.0),
+                  itemBuilder: (context, index) {
+                    if (snapshot.data?.docs[index].id != widget.currentUserId) {
+                      return buildItem(context, snapshot.data?.docs[index]);
+                    }
+
+                    return Container();
+                  },
+                  itemCount: snapshot.data?.docs.length,
+                  controller: listScrollController,
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                  ),
+                );
+              }
+            },
+          ),
+
+          // Loading
+          Positioned(
+            child: isLoading ? const LoadingIndicator() : Container(),
+          )
         ],
       ),
-      body: WillPopScope(
-        child: Stack(
-          children: <Widget>[
-            // List
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('users')
-                  .limit(_limit)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(10.0),
-                    itemBuilder: (context, index) {
-                      if (snapshot.data?.docs[index].id !=
-                          widget.currentUserId) {
-                        return buildItem(context, snapshot.data?.docs[index]);
-                      }
+    );
+  }
 
-                      return Container();
-                    },
-                    itemCount: snapshot.data?.docs.length,
-                    controller: listScrollController,
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                    ),
-                  );
-                }
-              },
-            ),
-
-            // Loading
-            Positioned(
-              child: isLoading ? const LoadingIndicator() : Container(),
-            )
-          ],
-        ),
-        onWillPop: onBackPress,
+  /// buildHomeScreenAppBar
+  AppBar buildHomeScreenAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
+      title: const Text(
+        'Chat Home',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      centerTitle: true,
+      actions: <Widget>[
+        buildLogoutPopUp(),
+      ],
     );
   }
 
@@ -315,7 +235,7 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ///
+  /// build Avialable User Item
   Widget buildItem(BuildContext context, DocumentSnapshot? document) {
     if (document != null) {
       var userChat = UserChat.fromDocument(document);

@@ -27,7 +27,7 @@ class LogoutRemoteButton extends StatelessWidget {
             height: 40,
             width: 40,
             surfaceColor: const Color(0xFFe58dbb),
-            parentColor: Colors.grey,
+            parentColor: Colors.grey[600],
             emboss: true,
             spread: 2,
             curveType: CurveType.concave,

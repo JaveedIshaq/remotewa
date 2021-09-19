@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unused_constructor_parameters
+
 /* 
 ************************** File Information *******************************
 
@@ -70,37 +72,66 @@ class Chat extends StatelessWidget {
 
 /// Chat Screen
 class ChatScreen extends StatefulWidget {
-  final String peerId;
-  final String peerAvatar;
-
-  ChatScreen({Key? key, required this.peerId, required this.peerAvatar})
+  /// Constructor
+  const ChatScreen({Key? key, required this.peerId, required this.peerAvatar})
       : super(key: key);
+
+  /// peerId
+  final String peerId;
+
+  /// peerAvatar
+  final String peerAvatar;
 
   @override
   State createState() =>
+      // ignore: no_logic_in_create_state
       ChatScreenState(peerId: peerId, peerAvatar: peerAvatar);
 }
 
+/// ChatScreenState
 class ChatScreenState extends State<ChatScreen> {
+  ///
   ChatScreenState({Key? key, required this.peerId, required this.peerAvatar});
 
+  ///peerId
   String peerId;
+
+  ///peerAvatar
   String peerAvatar;
+
+  /// id
   String? id;
 
-  List<QueryDocumentSnapshot> listMessage = new List.from([]);
+  /// list of messages
+  List<QueryDocumentSnapshot> listMessage = List.from([]);
   int _limit = 20;
-  int _limitIncrement = 20;
+  final int _limitIncrement = 20;
+
+  /// groupChatId
   String groupChatId = '';
+
+  /// SharedPreferences
   SharedPreferences? prefs;
 
+  /// imageFile
   File? imageFile;
+
+  /// idLoading
   bool isLoading = false;
+
+  /// Show Stricker Panel
   bool isShowSticker = false;
+
+  /// imageUrl
   String imageUrl = '';
 
+  /// textEditingController
   final TextEditingController textEditingController = TextEditingController();
+
+  ///listScrollController
   final ScrollController listScrollController = ScrollController();
+
+  ///focusNode
   final FocusNode focusNode = FocusNode();
 
   _scrollListener() {
@@ -151,6 +182,7 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  /// prepare groupd Id and Chatting with Collection Refence
   readLocal() async {
     prefs = await SharedPreferences.getInstance();
     id = prefs?.getString('id') ?? '';
@@ -168,6 +200,7 @@ class ChatScreenState extends State<ChatScreen> {
     setState(() {});
   }
 
+  /// getImage Image from Galllery
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
     PickedFile? pickedFile;
@@ -184,13 +217,14 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  /// Enable Showing Sticker selecting Panel
   void getSticker() {
-    // Hide keyboard when sticker appear
-    focusNode.unfocus();
     setState(() {
       isShowSticker = !isShowSticker;
     });
   }
+
+  /// uploadFile to Firebase Storage
 
   Future uploadFile() async {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();

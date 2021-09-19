@@ -11,16 +11,25 @@ It is the Entry point of the App
 
 **************************************************************************** 
 */
-
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'screens/login_screen/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]).then((_) => runApp(
+        DevicePreview(
+          enabled: false,
+          builder: (context) => const MyApp(), // Wrap your app
+        ),
+      ));
 }
 
 /// It is the Entry Point of the App

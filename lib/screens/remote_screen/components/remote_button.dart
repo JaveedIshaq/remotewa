@@ -10,10 +10,14 @@ class RemoteButton extends StatelessWidget {
     required this.onTap,
     required this.bgColor,
     required this.title,
+    required this.onLongPress,
   }) : super(key: key);
 
   /// OnTap
   final VoidCallback onTap;
+
+  /// OnTap
+  final VoidCallback onLongPress;
 
   /// Button Back ground Color
   final Color bgColor;
@@ -29,13 +33,14 @@ class RemoteButton extends StatelessWidget {
         padding: const EdgeInsets.only(top: 38.0, left: 20),
         child: InkWell(
           splashColor: kPrimaryColor,
+          onLongPress: onLongPress,
           onTap: onTap,
           child: ClayContainer(
             borderRadius: 10,
             height: 50,
             width: 50,
             surfaceColor: bgColor,
-            parentColor: Colors.grey,
+            parentColor: Colors.grey[600],
             emboss: true,
             spread: 2,
             curveType: CurveType.concave,
