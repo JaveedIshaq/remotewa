@@ -1,5 +1,14 @@
-# Remotewa
+# Remotebase Hackfest
+## Challenge from Remotebase
 
+Build an app that solves the problem Of loneliness in remote work. In an
+office environment, there are a lot of chance encounters, and people get to
+interact a lot as they work out of the same place. However, this is hard in
+remote work as people are not working out of the same location. Create an
+app that solves this that enables teams to casually engage with each
+other and interact with each other remotely. This can be through casual
+video streams, online games, or any other idea that you come up With. This
+challenge is completely open to however you want to solve this problem.
 
 
 
