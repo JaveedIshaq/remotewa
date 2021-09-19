@@ -22,7 +22,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:remotewa/config/colors.dart';
 import 'package:remotewa/models/user_chat.dart';
-import 'package:remotewa/screens/home_screen/home_screen.dart';
 import 'package:remotewa/screens/remote_screen/remote_screen.dart';
 import 'package:remotewa/shared_widgets/big_heading_text.dart';
 import 'package:remotewa/shared_widgets/google_signin_button.dart';
@@ -87,16 +86,6 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
-
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => HomeScreen(
-      //             currentUserId: prefs!.getString('id') ?? '',
-      //             currentUserName: prefs!.getString('nickname') ?? '',
-      //             currentUserPhotoUrl: prefs!.getString('photoUrl') ?? '',
-      //           )),
-      // );
     }
 
     setState(() {

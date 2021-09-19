@@ -9,7 +9,10 @@ Author      : Javeed Ishaq (www.javeedishaq.com)
 
 Description : Chat Screen
 
-Home View in the App
+Chat Screen
+
+this is the chat screen file, PeerId, peerAvatar and peerName values
+are recieved via constructor
 
 **************************************************************************** 
 */
@@ -54,6 +57,7 @@ class Chat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kBgColor,
       appBar: AppBar(
         title: Text(
           peerName,
@@ -173,6 +177,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   // *********************************
 
+  /// OnFocus Change of the input
   void onFocusChange() {
     if (focusNode.hasFocus) {
       // Hide sticker when keyboard appear
@@ -202,6 +207,12 @@ class ChatScreenState extends State<ChatScreen> {
 
   /// getImage Image from Galllery
   Future getImage() async {
+    /// close Sticker or Emoji Picker
+    setState(() {
+      isShowSticker = false;
+      emojiShowing = false;
+    });
+
     ImagePicker imagePicker = ImagePicker();
     PickedFile? pickedFile;
 
@@ -221,6 +232,7 @@ class ChatScreenState extends State<ChatScreen> {
   void getSticker() {
     setState(() {
       isShowSticker = !isShowSticker;
+      emojiShowing = false;
     });
   }
 
@@ -348,7 +360,7 @@ class ChatScreenState extends State<ChatScreen> {
                                     height: 200.0,
                                     fit: BoxFit.cover,
                                   ),
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(8.0),
                                   ),
                                   clipBehavior: Clip.hardEdge,
@@ -359,7 +371,7 @@ class ChatScreenState extends State<ChatScreen> {
                               fit: BoxFit.cover,
                             ),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
+                                const BorderRadius.all(Radius.circular(8.0)),
                             clipBehavior: Clip.hardEdge,
                           ),
                           onPressed: () {
@@ -374,7 +386,7 @@ class ChatScreenState extends State<ChatScreen> {
                           },
                           style: ButtonStyle(
                               padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.all(0))),
+                                  const EdgeInsets.all(0))),
                         ),
                         margin: EdgeInsets.only(
                             bottom: isLastMessageRight(index) ? 20.0 : 10.0,
@@ -466,7 +478,7 @@ class ChatScreenState extends State<ChatScreen> {
                                       return Container(
                                         decoration: BoxDecoration(
                                           color: greyColor2,
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                             Radius.circular(8.0),
                                           ),
                                         ),
@@ -499,7 +511,7 @@ class ChatScreenState extends State<ChatScreen> {
                                         height: 200.0,
                                         fit: BoxFit.cover,
                                       ),
-                                      borderRadius: BorderRadius.all(
+                                      borderRadius: const BorderRadius.all(
                                         Radius.circular(8.0),
                                       ),
                                       clipBehavior: Clip.hardEdge,
@@ -508,8 +520,8 @@ class ChatScreenState extends State<ChatScreen> {
                                     height: 200.0,
                                     fit: BoxFit.cover,
                                   ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.0)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(8.0)),
                                   clipBehavior: Clip.hardEdge,
                                 ),
                                 onPressed: () {
@@ -523,9 +535,9 @@ class ChatScreenState extends State<ChatScreen> {
                                 style: ButtonStyle(
                                     padding:
                                         MaterialStateProperty.all<EdgeInsets>(
-                                            EdgeInsets.all(0))),
+                                            const EdgeInsets.all(0))),
                               ),
-                              margin: EdgeInsets.only(left: 10.0),
+                              margin: const EdgeInsets.only(left: 10.0),
                             )
                           : Container(
                               child: Image.asset(
@@ -554,21 +566,22 @@ class ChatScreenState extends State<ChatScreen> {
                             fontSize: 12.0,
                             fontStyle: FontStyle.italic),
                       ),
-                      margin:
-                          EdgeInsets.only(left: 50.0, top: 5.0, bottom: 5.0),
+                      margin: const EdgeInsets.only(
+                          left: 50.0, top: 5.0, bottom: 5.0),
                     )
                   : Container()
             ],
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          margin: EdgeInsets.only(bottom: 10.0),
+          margin: const EdgeInsets.only(bottom: 10.0),
         );
       }
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
+  ///
   bool isLastMessageLeft(int index) {
     if ((index > 0 && listMessage[index - 1].get('idFrom') == id) ||
         index == 0) {
@@ -578,6 +591,7 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  /// isLastMessageRight
   bool isLastMessageRight(int index) {
     if ((index > 0 && listMessage[index - 1].get('idFrom') != id) ||
         index == 0) {
@@ -587,6 +601,7 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  /// onBackPress
   Future<bool> onBackPress() {
     if (isShowSticker) {
       setState(() {
@@ -606,6 +621,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: onBackPress,
       child: Stack(
         children: <Widget>[
           Column(
@@ -638,10 +654,10 @@ class ChatScreenState extends State<ChatScreen> {
           buildLoading()
         ],
       ),
-      onWillPop: onBackPress,
     );
   }
 
+  /// Show Sticker Showing
   Widget buildSticker() {
     return Expanded(
       child: Container(
@@ -710,6 +726,7 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  /// Build Loading Indicator show logic
   Widget buildLoading() {
     return Positioned(
       child: isLoading ? const LoadingIndicator() : Container(),
@@ -738,6 +755,7 @@ class ChatScreenState extends State<ChatScreen> {
             focusNode: focusNode,
             onTap: () {
               setState(() {
+                isShowSticker = false;
                 emojiShowing = !emojiShowing;
               });
             },
@@ -787,6 +805,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   // ******************************
 
+  /// List All Messages
   Widget buildListMessage() {
     return Flexible(
       child: groupChatId.isNotEmpty
@@ -803,7 +822,7 @@ class ChatScreenState extends State<ChatScreen> {
                 if (snapshot.hasData) {
                   listMessage.addAll(snapshot.data!.docs);
                   return ListView.builder(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     itemBuilder: (context, index) =>
                         buildItem(index, snapshot.data?.docs[index]),
                     itemCount: snapshot.data?.docs.length,

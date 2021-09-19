@@ -1,3 +1,24 @@
+/* 
+************************** File Information *******************************
+
+Date        : 2021/09/19
+
+Author      : Javeed Ishaq (www.javeedishaq.com)
+
+Description : Remote UI Screen
+
+Chat Screen
+
+this is the chat screen file, PeerId, peerAvatar and peerName values
+are recieved via constructor
+
+This View Contains a screens with a TV like remote UI, 
+on each Button there is saved a message and the user whome it to send
+on long press User can see/change the Saved Message for each Button
+
+**************************************************************************** 
+*/
+
 import 'package:clay_containers/clay_containers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

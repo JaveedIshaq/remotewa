@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:remotewa/config/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:remotewa/config/colors.dart';
 
+/// ChatMessageBubble
 class ChatMessageBubble extends StatelessWidget {
+  /// ChatMessageBubble
   const ChatMessageBubble({
     Key? key,
     required this.text,
@@ -11,6 +13,7 @@ class ChatMessageBubble extends StatelessWidget {
     required this.time,
   }) : super(key: key);
 
+  /// text
   final String text;
   final String name;
   final DateTime time;
@@ -52,15 +55,15 @@ class ChatMessageBubble extends StatelessWidget {
                     bottomLeft: Radius.circular(5.r),
                   ),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
                 child: Text(
-                  "$name",
-                  style: TextStyle(color: Colors.white, fontSize: 10),
+                  name,
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
                 ),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               Text(f.format(DateTime.parse('$time')),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 10,
                     color: Colors.grey,
                   ))

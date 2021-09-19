@@ -1,3 +1,18 @@
+/* 
+************************** File Information *******************************
+
+Date        : 2021/09/19
+
+Author      : Javeed Ishaq (www.javeedishaq.com)
+
+Description : Settings Screen
+
+
+On This Screen User can set its Name, Avate and about text
+
+**************************************************************************** 
+*/
+
 import 'dart:async';
 import 'dart:io';
 
@@ -9,51 +24,88 @@ import 'package:image_picker/image_picker.dart';
 import 'package:remotewa/config/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'components/profile_image_avatar.dart';
+
+/// ChatSettings
 class ChatSettings extends StatelessWidget {
+  /// Constructor
+  const ChatSettings({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kBgColor,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'SETTINGS',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
-      body: SettingsScreen(),
+      body: const SettingsScreen(),
     );
   }
 }
 
+/// Setting Screen Body Widget
 class SettingsScreen extends StatefulWidget {
+  /// Constructor
+  const SettingsScreen({
+    Key? key,
+  }) : super(key: key);
+
   @override
   State createState() => SettingsScreenState();
 }
 
+/// SettingsScreenState
 class SettingsScreenState extends State<SettingsScreen> {
+  /// controllerNickname
   TextEditingController? controllerNickname;
+
+  /// controllerAboutMe
   TextEditingController? controllerAboutMe;
 
+  /// SharedPreferences
   SharedPreferences? prefs;
 
+  /// User Id
   String id = '';
+
+  /// User Nick Name
   String nickname = '';
+
+  /// User aboutMe
   String aboutMe = '';
+
+  /// photoUrl
   String photoUrl = '';
 
+  /// isLoading
   bool isLoading = false;
+
+  /// avatarImageFile
   File? avatarImageFile;
 
+  /// focusNodeNickname
   final FocusNode focusNodeNickname = FocusNode();
+
+  /// focusNodeAboutMe
   final FocusNode focusNodeAboutMe = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    readLocal();
+    getUserValuesFromSharedPref();
   }
 
-  void readLocal() async {
+  /// getUserValuesFromSharedPref
+  void getUserValuesFromSharedPref() async {
     prefs = await SharedPreferences.getInstance();
     id = prefs?.getString('id') ?? '';
     nickname = prefs?.getString('nickname') ?? '';
@@ -67,6 +119,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     setState(() {});
   }
 
+  /// getImage for profile Avatar
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
     PickedFile? pickedFile = await imagePicker
@@ -87,6 +140,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  /// Upload Profile Image to the Backend
   Future uploadFile() async {
     String fileName = id;
     Reference reference = FirebaseStorage.instance.ref().child(fileName);
@@ -103,7 +157,7 @@ class SettingsScreenState extends State<SettingsScreen> {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(msg: "Upload success");
+        Fluttertoast.showToast(msg: 'Upload success');
       }).catchError((err) {
         setState(() {
           isLoading = false;
@@ -118,6 +172,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  /// handleUpdateData Values in Database
   void handleUpdateData() {
     focusNodeNickname.unfocus();
     focusNodeAboutMe.unfocus();
@@ -139,7 +194,7 @@ class SettingsScreenState extends State<SettingsScreen> {
         isLoading = false;
       });
 
-      Fluttertoast.showToast(msg: "Update success");
+      Fluttertoast.showToast(msg: 'Update success');
     }).catchError((err) {
       setState(() {
         isLoading = false;
@@ -163,49 +218,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                     children: <Widget>[
                       avatarImageFile == null
                           ? photoUrl.isNotEmpty
-                              ? Material(
-                                  child: Image.network(
-                                    photoUrl,
-                                    fit: BoxFit.cover,
-                                    width: 90.0,
-                                    height: 90.0,
-                                    errorBuilder:
-                                        (context, object, stackTrace) {
-                                      return Icon(
-                                        Icons.account_circle,
-                                        size: 90.0,
-                                        color: greyColor,
-                                      );
-                                    },
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Container(
-                                        width: 90.0,
-                                        height: 90.0,
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null &&
-                                                    loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                ? loadingProgress
-                                                        .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                : null,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(45.0)),
-                                  clipBehavior: Clip.hardEdge,
-                                )
+                              ? ProfileImageAvatar(photoUrl: photoUrl)
                               : Icon(
                                   Icons.account_circle,
                                   size: 90.0,
@@ -219,7 +232,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                                 fit: BoxFit.cover,
                               ),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(45.0)),
+                                  const BorderRadius.all(Radius.circular(45.0)),
                               clipBehavior: Clip.hardEdge,
                             ),
                       IconButton(
@@ -228,7 +241,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                           color: primaryColor.withOpacity(0.5),
                         ),
                         onPressed: getImage,
-                        padding: EdgeInsets.all(30.0),
+                        padding: const EdgeInsets.all(30.0),
                         splashColor: Colors.transparent,
                         highlightColor: greyColor,
                         iconSize: 30.0,
@@ -237,7 +250,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 width: double.infinity,
-                margin: EdgeInsets.all(20.0),
+                margin: const EdgeInsets.all(20.0),
               ),
 
               // Input
@@ -252,7 +265,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                           fontWeight: FontWeight.bold,
                           color: primaryColor),
                     ),
-                    margin: EdgeInsets.only(left: 10.0, bottom: 5.0, top: 10.0),
+                    margin: const EdgeInsets.only(
+                        left: 10.0, bottom: 5.0, top: 10.0),
                   ),
                   Container(
                     child: Theme(
@@ -261,7 +275,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Sweetie',
-                          contentPadding: EdgeInsets.all(5.0),
+                          contentPadding: const EdgeInsets.all(5.0),
                           hintStyle: TextStyle(color: greyColor),
                         ),
                         controller: controllerNickname,
@@ -271,7 +285,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                         focusNode: focusNodeNickname,
                       ),
                     ),
-                    margin: EdgeInsets.only(left: 30.0, right: 30.0),
+                    margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                   ),
 
                   // About me
@@ -283,7 +297,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                           fontWeight: FontWeight.bold,
                           color: primaryColor),
                     ),
-                    margin: EdgeInsets.only(left: 10.0, top: 30.0, bottom: 5.0),
+                    margin: const EdgeInsets.only(
+                        left: 10.0, top: 30.0, bottom: 5.0),
                   ),
                   Container(
                     child: Theme(
@@ -292,7 +307,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Fun, like travel and play PES...',
-                          contentPadding: EdgeInsets.all(5.0),
+                          contentPadding: const EdgeInsets.all(5.0),
                           hintStyle: TextStyle(color: greyColor),
                         ),
                         controller: controllerAboutMe,
@@ -302,7 +317,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                         focusNode: focusNodeAboutMe,
                       ),
                     ),
-                    margin: EdgeInsets.only(left: 30.0, right: 30.0),
+                    margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                   ),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +327,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               Container(
                 child: TextButton(
                   onPressed: handleUpdateData,
-                  child: Text(
+                  child: const Text(
                     'UPDATE',
                     style: TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
@@ -320,15 +335,15 @@ class SettingsScreenState extends State<SettingsScreen> {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(primaryColor),
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                      EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
+                      const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
                     ),
                   ),
                 ),
-                margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+                margin: const EdgeInsets.only(top: 50.0, bottom: 50.0),
               ),
             ],
           ),
-          padding: EdgeInsets.only(left: 15.0, right: 15.0),
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
         ),
 
         // Loading
