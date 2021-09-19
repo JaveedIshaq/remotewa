@@ -1,5 +1,18 @@
-// ignore_for_file: prefer_collection_literals
+/* 
+************************** File Information *******************************
 
+Date        : 2021/09/18
+
+Author      : Javeed Ishaq (www.javeedishaq.com)
+
+Description : Helper Functions
+
+This File contains Style Objects of the App
+
+**************************************************************************** 
+*/
+
+/// Model Class for App User
 class AppUser {
   String? uid;
   String? name;
@@ -8,9 +21,9 @@ class AppUser {
   AppUser({this.uid, this.name, this.email});
 
   AppUser.fromJson(Map<String, dynamic> json) {
-    uid = json['uid'];
-    name = json['name'];
-    email = json['email'];
+    uid = json['uid'] as String;
+    name = json['name'] as String;
+    email = json['email'] as String;
   }
 
   Map<String, dynamic> toJson() {

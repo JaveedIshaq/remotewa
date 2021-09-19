@@ -1,14 +1,30 @@
-import 'package:flutter/material.dart';
-import 'package:remotewa/config/colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+/* 
+************************** File Information *******************************
 
+Date        : 2021/09/18
+
+Author      : Javeed Ishaq (www.javeedishaq.com)
+
+Description : Helper Functions
+
+This File contains Style Objects of the App
+
+**************************************************************************** 
+*/
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:remotewa/config/colors.dart';
+
+/// heading style
 var headingStyle = TextStyle(
   fontWeight: FontWeight.bold,
-  fontSize: 26.sp,
+  fontSize: 36.sp,
   color: Colors.white,
   fontFamily: 'Asap',
 );
 
+/// messageInputDecoration
 var messageInputDecoration = InputDecoration(
   filled: true,
   fillColor: kBgColor,
@@ -40,9 +56,10 @@ var messageInputDecoration = InputDecoration(
       bottomLeft: Radius.circular(20.r),
     ),
   ),
-  hintText: "",
+  hintText: '',
 );
 
+/// postInputDecoration
 var postInputDecoration = InputDecoration(
   filled: true,
   fillColor: kBgColor,
@@ -54,16 +71,16 @@ var postInputDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(15),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(
+    borderSide: const BorderSide(
       color: kBgColor,
     ),
     borderRadius: BorderRadius.circular(15),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(
+    borderSide: const BorderSide(
       color: kBgColor,
     ),
     borderRadius: BorderRadius.circular(15),
   ),
-  hintText: "",
+  hintText: '',
 );

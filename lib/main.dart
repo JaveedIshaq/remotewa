@@ -1,28 +1,37 @@
+/* 
+************************** File Information *******************************
+
+Date        : 2021/09/18
+
+Author      : Javeed Ishaq (www.javeedishaq.com)
+
+Description : main
+
+It is the Entry point of the App
+
+**************************************************************************** 
+*/
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:remotewa/screens/login_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:device_preview/device_preview.dart';
+import 'screens/login_screen/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-    DevicePreview(
-      enabled: false,
-      builder: (context) => const MyApp(), // Wrap your app
-    ),
-  );
+  runApp(const MyApp());
 }
 
+/// It is the Entry Point of the App
 class MyApp extends StatelessWidget {
+  ///
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
+      designSize: const Size(360, 640),
       builder: () => MaterialApp(
-        debugShowCheckedModeBanner: false,
         title: 'Remotewa',
         theme: ThemeData(
           primarySwatch: Colors.indigo,
@@ -30,6 +39,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
         ),
         home: const LoginScreen(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

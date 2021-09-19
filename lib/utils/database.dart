@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:remotewa/models/aap_user.dart';
 import 'package:remotewa/models/chat_message.dart';
-import 'package:remotewa/models/feed_post.dart';
 
 class Database {
   static final Database _singleton = Database._internal();
@@ -43,12 +42,12 @@ class Database {
         .catchError((error) => print("Failed to add user: $error"));
   }
 
-  storePost({required FeedPost post, required User user}) async {
-    await postsCollection
-        .add(post.toJson())
-        .then((value) => print("post added int Database"))
-        .catchError((error) => print("Failed to add user: $error"));
-  }
+  // storePost({required FeedPost post, required User user}) async {
+  //   await postsCollection
+  //       .add(post.toJson())
+  //       .then((value) => print("post added int Database"))
+  //       .catchError((error) => print("Failed to add user: $error"));
+  // }
 
   updateJumpCount({required User user, required int likeCount}) async {
     await postsCollection

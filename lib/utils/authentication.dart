@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+/// Authenticatio Class
 class Authentication {
-  //Example code of how to sign in with Google.
+  /// sign in with Google.
   static Future<User?> signInWithGoogle() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     try {
@@ -21,10 +22,12 @@ class Authentication {
       final user = userCredential.user;
       return user;
     } catch (e) {
+      // ignore: avoid_print
       print(e);
     }
   }
 
+  /// Sign out Functionlity
   static Future<void> signOut({required BuildContext context}) async {
     try {
       await FirebaseAuth.instance.signOut();

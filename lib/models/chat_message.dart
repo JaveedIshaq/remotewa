@@ -11,11 +11,11 @@ class ChatMessage {
       {this.uid, this.createAt, this.sendername, this.senderEmail, this.text});
 
   ChatMessage.fromJson(Map<String, dynamic> json) {
-    uid = json['uid'];
-    createAt = json['createAt'];
-    sendername = json['sendername'];
-    senderEmail = json['senderEmail'];
-    text = json['text'];
+    uid = json['uid'] as String;
+    createAt = json['createAt'] as DateTime;
+    sendername = json['sendername'] as String;
+    senderEmail = json['senderEmail'] as String;
+    text = json['text'] as String;
   }
 
   Map<String, dynamic> toJson() {
