@@ -11,6 +11,15 @@ video streams, online games, or any other idea that you come up With. This
 challenge is completely open to however you want to solve this problem.
 
 
+### Team p-6-team Solution
+# Remotewa
+
+Remotewa is an app which makes it pretty easy to send a message very quickly 
+User Can save the message and  on one Tap the message is delivered to the user
+
+idea works same like the TV remote wherere Button Does Perform a specific alloted task
+
+The Reotewa App has screen where user can tap on the Number and pre saved message is sent to the user
 
 APK Download Link
 
