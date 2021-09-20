@@ -19,7 +19,7 @@ User Can save the message and  on one Tap the message is delivered to the user
 
 idea works same like the TV remote wherere Button Does Perform a specific alloted task
 
-The Reotewa App has screen where user can tap on the Number and pre saved message is sent to the user
+The Remotewa App has screen where user can tap on the Number and pre saved message is sent to the user
 
 APK Download Link
 
